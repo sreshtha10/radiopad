@@ -57,6 +57,35 @@ class _HomePageState extends State<HomePage> {
       case "stop":
         _audioPlayer.stop();
         break;
+      case "next":
+        final index = _selectedRadio.id;
+        MyRadio newRadio;
+        if(index+1>radios.length){
+          newRadio = radios.firstWhere((element) => element.id==1);
+          radios.remove(newRadio);
+          radios.insert(0, newRadio);
+        }
+        else{
+          newRadio = radios.firstWhere((element) => element.id == index+1);
+          radios.remove(newRadio);
+          radios.insert(0, newRadio);
+        }
+        break;
+      case "prev":
+        final index = _selectedRadio.id;
+        MyRadio newRadio;
+        if(index-1<0){
+          newRadio = radios.firstWhere((element) => element.id==1);
+          radios.remove(newRadio);
+          radios.insert(0, newRadio);
+        }
+        else{
+          newRadio = radios.firstWhere((element) => element.id == index-1);
+          radios.remove(newRadio);
+          radios.insert(0, newRadio);
+        }
+
+        break;
       default:
         break;
     }
