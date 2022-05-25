@@ -1,3 +1,4 @@
+import 'package:alan_voice/alan_voice.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,12 +17,16 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   List<MyRadio> radios = myRadios;
   MyRadio _selectedRadio = myRadios[0];
-  Color? _selectedColor = null;
   bool _isPlaying = false;
+
+
+
 
   @override
   void initState() {
     super.initState();
+
+    setUpAlan();
     _audioPlayer.onPlayerStateChanged.listen((event) {
       if (event == PlayerState.PLAYING) {
         _isPlaying = true;
@@ -35,6 +40,28 @@ class _HomePageState extends State<HomePage> {
 
   final AudioPlayer _audioPlayer = AudioPlayer();
 
+
+  setUpAlan(){
+    AlanVoice.addButton(
+        "b919a9a76d3a9b59a85acf818c7762c72e956eca572e1d8b807a3e2338fdd0dc/stage",
+        buttonAlign: AlanVoice.BUTTON_ALIGN_LEFT);
+    AlanVoice.callbacks.add((command) => _handleCommand(command.data));
+  }
+
+
+  _handleCommand(Map<String,dynamic> response){
+    switch(response['command']){
+      case "play":
+        play(_selectedRadio.url);
+        break;
+      case "stop":
+        _audioPlayer.stop();
+        break;
+      default:
+        break;
+    }
+  }
+
   play(String url)  {
     _audioPlayer.play(url);
     _selectedRadio = radios.firstWhere((element) => element.url == url);
@@ -45,7 +72,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(),
+      drawer: const Drawer(),
       body: Stack(
         children: [
           VxAnimatedBox()

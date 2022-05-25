@@ -33,6 +33,7 @@ dependencies:
   cupertino_icons: ^1.0.4
   google_fonts: ^3.0.1
   velocity_x: ^3.4.0
+  alan_voice: ^3.5.0
 
 
 
